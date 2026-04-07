@@ -16,15 +16,21 @@ type Client struct {
 
 // PluginMeta holds plugin metadata from the registry.
 type PluginMeta struct {
-	ID          string `json:"id"`
-	Title       string `json:"title"`
-	Version     string `json:"version"`
-	Author      string `json:"author"`
-	Description string `json:"description"`
-	Type        string `json:"type"`
-	Runtime     string `json:"runtime"`
-	Repo        string `json:"repo"`
-	DownloadURL string `json:"download_url"`
+	ID          string   `json:"name"`
+	Title       string   `json:"title"`
+	Version     string   `json:"version"`
+	Author      string   `json:"author"`
+	Description string   `json:"description"`
+	Type        string   `json:"type"`
+	Runtime     string   `json:"runtime"`
+	Repo        string   `json:"repo"`
+	Homepage    string   `json:"homepage"`
+	Icon        string   `json:"icon"`
+	Tags        []string `json:"tags"`
+	IsOfficial  bool     `json:"is_official"`
+	License     string   `json:"license"`
+	TrustLevel  string   `json:"trust_level"`
+	DownloadURL string   `json:"download_url"`
 }
 
 // NewClient creates a registry client. If baseURL is empty, the default is used.
@@ -33,6 +39,26 @@ func NewClient(baseURL string) *Client {
 		baseURL = defaultRegistryURL
 	}
 	return &Client{baseURL: baseURL}
+}
+
+// ListPlugins fetches all plugins from the registry.
+func (c *Client) ListPlugins() ([]PluginMeta, error) {
+	url := c.baseURL + "/registry.json"
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, fmt.Errorf("fetch registry: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("registry unavailable (HTTP %d)", resp.StatusCode)
+	}
+
+	var plugins []PluginMeta
+	if err := json.NewDecoder(resp.Body).Decode(&plugins); err != nil {
+		return nil, fmt.Errorf("decode: %w", err)
+	}
+	return plugins, nil
 }
 
 // GetPlugin fetches plugin metadata from the registry.
