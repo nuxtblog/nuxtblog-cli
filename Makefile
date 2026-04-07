@@ -3,10 +3,10 @@ BINARY := nuxtblog
 .PHONY: build install lint snapshot clean
 
 build:
-	go build -o $(BINARY) .
+	go build -o $(BINARY) ./cmd/nuxtblog
 
 install:
-	go install .
+	go install ./cmd/nuxtblog
 
 lint:
 	go vet ./...

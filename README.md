@@ -32,7 +32,7 @@ nuxtblog --help
 需要 Go 1.25+：
 
 ```bash
-go install github.com/nuxtblog/nuxtblog-cli@latest
+go install github.com/nuxtblog/nuxtblog-cli/cmd/nuxtblog@latest
 ```
 
 或在项目目录内：
