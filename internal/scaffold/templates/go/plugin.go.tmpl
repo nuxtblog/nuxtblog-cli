@@ -1,0 +1,30 @@
+package {{.PkgName}}
+
+import (
+	_ "embed"
+
+	pluginsdk "github.com/nuxtblog/nuxtblog/sdk"
+)
+
+//go:embed plugin.yaml
+var manifestYAML []byte
+
+func init() {
+	pluginsdk.Register(&Plugin{})
+}
+
+// Plugin implements the {{.ID}} plugin.
+type Plugin struct {
+	pluginsdk.BasePlugin
+	ctx pluginsdk.PluginContext
+}
+
+func (p *Plugin) Manifest() pluginsdk.Manifest {
+	return pluginsdk.ParseManifestCached("{{.ID}}", manifestYAML)
+}
+
+func (p *Plugin) Activate(ctx pluginsdk.PluginContext) error {
+	p.ctx = ctx
+	ctx.Log.Info("{{.ID}} activated")
+	return nil
+}

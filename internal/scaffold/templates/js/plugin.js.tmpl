@@ -1,0 +1,24 @@
+// {{.ID}} — JavaScript plugin for NuxtBlog
+//
+// This file is loaded by the Goja interpreter at runtime.
+// Export functions matching route declarations in plugin.yaml.
+
+/**
+ * Called when the plugin is activated.
+ * @param {object} ctx - Plugin context with db, store, settings, log
+ */
+function activate(ctx) {
+  ctx.log.info("{{.ID}} activated");
+}
+
+/**
+ * Called when the plugin is deactivated.
+ */
+function deactivate() {}
+
+/**
+ * Handle platform events.
+ * @param {string} event - Event name (e.g. "post.published")
+ * @param {object} data - Event payload
+ */
+function onEvent(event, data) {}
